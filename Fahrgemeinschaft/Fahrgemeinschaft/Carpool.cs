@@ -8,7 +8,7 @@ namespace Fahrgemeinschaft
 {
 	internal class Carpool
 	{
-		public int NumberOfPassenger;
+		private int NumberOfPassenger;
 		public double price;
 		public int NumberOfDrives;
 		public Person driver;
@@ -28,4 +28,21 @@ namespace Fahrgemeinschaft
 			this.driver = user;
 		}
 	}
+
+	//public class MotorcyclePool : Carpool
+	//{
+	//	public MotorcyclePool(Person person, double price) : base(person, price)
+	//	{
+	//	}
+	//}
+	//class BAA {
+//       public BAA()
+ //       {
+	//		var foo = new Carpool(null, 2.0);
+	//		foo.
+
+	//	}
+ //   }
+
+
 }

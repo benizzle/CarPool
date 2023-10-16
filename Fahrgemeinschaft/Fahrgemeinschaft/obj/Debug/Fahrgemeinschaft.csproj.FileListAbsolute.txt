@@ -5,3 +5,10 @@ C:\Users\BEI\source\repos\Fahrgemeinschaft\Fahrgemeinschaft\bin\Debug\Fahrgemein
 C:\Users\BEI\source\repos\Fahrgemeinschaft\Fahrgemeinschaft\bin\Debug\Fahrgemeinschaft.pdb
 C:\Users\BEI\source\repos\Fahrgemeinschaft\Fahrgemeinschaft\obj\Debug\Fahrgemeinschaft.exe
 C:\Users\BEI\source\repos\Fahrgemeinschaft\Fahrgemeinschaft\obj\Debug\Fahrgemeinschaft.pdb
+C:\repos\Fahrgemeinschaft\Fahrgemeinschaft\bin\Debug\Fahrgemeinschaft.exe.config
+C:\repos\Fahrgemeinschaft\Fahrgemeinschaft\bin\Debug\Fahrgemeinschaft.exe
+C:\repos\Fahrgemeinschaft\Fahrgemeinschaft\bin\Debug\Fahrgemeinschaft.pdb
+C:\repos\Fahrgemeinschaft\Fahrgemeinschaft\obj\Debug\Fahrgemeinschaft.csproj.AssemblyReference.cache
+C:\repos\Fahrgemeinschaft\Fahrgemeinschaft\obj\Debug\Fahrgemeinschaft.csproj.CoreCompileInputs.cache
+C:\repos\Fahrgemeinschaft\Fahrgemeinschaft\obj\Debug\Fahrgemeinschaft.exe
+C:\repos\Fahrgemeinschaft\Fahrgemeinschaft\obj\Debug\Fahrgemeinschaft.pdb

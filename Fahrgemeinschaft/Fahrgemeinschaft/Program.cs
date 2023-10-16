@@ -12,18 +12,18 @@ namespace Fahrgemeinschaft
 {
 	internal class Program
 	{
+		public static List<string> plines = new List<string>();
 		public static List<Carpool> carpools = new List<Carpool>();
 		public static List<Person> users = new List<Person>();
 		public static Person currentuser = null;
 		public static Carpool currentcarpool = null;
+
+		public static string path1 = @"C:\\repos\\Fahrgemeinschaft\\PersonList.csv";
 		static void Main(string[] args)
 		{
-			//for testphase
+			List<string> userslist = CSVHandler.ReadCsv(path1);
+			users = SetPersonList(userslist);
 
-			currentuser = new Person("bei", "Benjamin", "Eifert", "Kreuzstr. 10, 97990 Weikersheim", 'm');
-			users.Add(currentuser);
-
-			//for testphase
 
 			while (true)
 			{
@@ -52,7 +52,8 @@ namespace Fahrgemeinschaft
 				Console.WriteLine("5: Add new passenger");
 				Console.WriteLine("6: Create new Drive");
 				Console.WriteLine("7: List Drives");
-				Console.WriteLine("0: Logout");
+				Console.WriteLine("0: Save & Logout");
+				
 
 				userChoice = Convert.ToInt32(Console.ReadLine());
 				switch (userChoice)
@@ -60,6 +61,9 @@ namespace Fahrgemeinschaft
 					case 0:	//logout
 						currentuser = null;
 						currentcarpool = null;
+						var listOfUsers = GetPersonStringList(users);
+						//var listOfUsers2 = users.Where(person => person.username == "Schmidt").Select(person => person.ToString());
+						CSVHandler.WriteCsv(listOfUsers, path1);
 						break;
 					case 1: //Add car
 						Console.WriteLine("Add car: Model?");
@@ -75,12 +79,10 @@ namespace Fahrgemeinschaft
 							currentuser.cars.Add(myCar);
 							Console.WriteLine("Car added!");
 						}
-						catch (Exception e)
+						catch (Exception)
 						{
                             Console.WriteLine("Please enter a number!");
                         }
-
-
 						break;
 					case 2: //List your cars
 						if (currentuser.cars.Count() == 0)
@@ -122,8 +124,7 @@ namespace Fahrgemeinschaft
 							Console.WriteLine("We need your address please: ");
 							string uAddress = (Console.ReadLine());
 							Console.WriteLine("And your gender please: m/w/d");
-							char uGender2 = Convert.ToChar(Console.ReadLine());
-
+							string uGender2 = (Console.ReadLine());
 							Person user1 = new Person(reguser, uName, uSurname, uAddress, uGender2);
 							currentcarpool.passengers.Add(user1);
 						}
@@ -131,9 +132,16 @@ namespace Fahrgemeinschaft
 						{
 							GetCarpools();
 							Console.WriteLine("Wich Carpool?");
-							int cpchoice = Convert.ToInt16(Console.ReadLine()) - 1;
-							currentcarpool = carpools[cpchoice];
-
+							try
+							{
+								int cpchoice = Convert.ToInt16(Console.ReadLine()) - 1;
+								currentcarpool = carpools[cpchoice];
+							}
+							catch (Exception)
+							{
+								Console.WriteLine("Please enter only a number!");
+							}
+							
 							Console.WriteLine("Username: ");
 							string reguser = Console.ReadLine();
 							Console.WriteLine("Enter name: ");
@@ -143,8 +151,7 @@ namespace Fahrgemeinschaft
 							Console.WriteLine("We need your address please: ");
 							string uAddress = (Console.ReadLine());
 							Console.WriteLine("And your gender please: m/w/d");
-							char uGender2 = Convert.ToChar(Console.ReadLine());
-
+							string uGender2 = (Console.ReadLine());
 							Person user1 = new Person(reguser, uName, uSurname, uAddress, uGender2);
 							currentcarpool.passengers.Add(user1);
 						}
@@ -171,12 +178,15 @@ namespace Fahrgemeinschaft
 						string uDest = (Console.ReadLine());
 						Console.WriteLine("Distance");
 						double uDistance = Convert.ToDouble(Console.ReadLine());
-						Console.WriteLine("Start time");
-						DateTime uTime = Convert.ToDateTime(Console.ReadLine());
-
-						Drive newDrive = new Drive(uStart, uDest, uDistance, uTime);
-						currentcarpool.drives.Add(newDrive);
-						currentcarpool.NumberOfDrives++;
+						Console.WriteLine("Start time HH:MM");
+						try
+						{
+							DateTime uTime = Convert.ToDateTime(Console.ReadLine());
+							Drive newDrive = new Drive(uStart, uDest, uDistance, uTime);
+							currentcarpool.drives.Add(newDrive);
+							currentcarpool.NumberOfDrives++;
+						}
+						catch(Exception) { Console.WriteLine("Please insert right format HH:MM"); }
 						break;
 					case 7: //List Drives
 						Console.WriteLine("Your drives");
@@ -241,13 +251,54 @@ namespace Fahrgemeinschaft
 					Console.WriteLine("We need your address please: ");
 					string uAddress = (Console.ReadLine());
 					Console.WriteLine("And your gender please: m/w/d");
-					char uGender = Convert.ToChar(Console.ReadLine());
-
+					string uGender = (Console.ReadLine());
 					Person user1 = new Person(reguser, uName, uSurname, uAddress, uGender);
 					users.Add(user1);
 					currentuser = user1;
+					var listOfUsers = GetPersonStringList(users);
+					//var listOfUsers2 = users.Where(person => person.username == "Schmidt").Select(person => person.ToString());
+					CSVHandler.WriteCsv(listOfUsers, path1);
 				}
 			}
+		}
+		public static void AddPerson()
+		{
+			Console.WriteLine("Username: ");
+			string reguser = Console.ReadLine();
+			if (reguser != users.)
+			Console.WriteLine("Enter name: ");
+			string uName = (Console.ReadLine());
+			Console.WriteLine("Enter surname: ");
+			string uSurname = (Console.ReadLine());
+			Console.WriteLine("We need your address please: ");
+			string uAddress = (Console.ReadLine());
+			Console.WriteLine("And your gender please: m/w/d");
+			string uGender2 = (Console.ReadLine());
+			Person user1 = new Person(reguser, uName, uSurname, uAddress, uGender2);
+			currentcarpool.passengers.Add(user1);
+		}
+		public static List<Person> SetPersonList(List<string> list)
+		{
+			List<Person> users = new List<Person>();
+
+			foreach (string line in list)
+			{
+				string[] item = line.Split(';');
+
+				Person person = new Person(item[0].Trim('"'), item[1].Trim('"'), item[2].Trim('"'), item[3].Trim('"'), item[4].Trim('"'));
+				users.Add(person);
+			}
+			return users;
+		}
+		public static List<string> GetPersonStringList(List<Person> users)
+		{
+			List<string> list = new List<string>();
+
+			foreach (var person in users)
+			{
+				list.Add(person.ToString());
+			}
+			return list;
 		}
 		static void GetCarpools()
 		{

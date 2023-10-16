@@ -14,11 +14,10 @@ namespace Fahrgemeinschaft
 		public string name;
 		public string surname;
 		public string address;
-		public char gender;
+		public string gender;
 		public List<Car> cars;
 
-		// foo
-		public Person(string username, string name, string surname, string address, char gender)
+		public Person(string username, string name, string surname, string address, string gender)
 		{
 			this.username = username;
 			this.name = name;
@@ -27,6 +26,11 @@ namespace Fahrgemeinschaft
 			this.gender = gender;
 			this.cars = new List<Car>();
 		}
+		public override string ToString()
+		{
+			return $"\"{this.username}\";\"{this.name}\";\"{this.surname}\";\"{this.address}\";\"{this.gender}\"";
+		}
+		
 		public void GetCarList(List<Car> cars)
 		{
 			//noch aendern in programm.cs
