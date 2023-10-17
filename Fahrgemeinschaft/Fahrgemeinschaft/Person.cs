@@ -10,15 +10,17 @@ namespace Fahrgemeinschaft
 {
 	internal class Person
 	{
-		public string username;
-		public string name;
-		public string surname;
-		public string address;
-		public string gender;
+		public int Id { get; set; }
+		public string Username { get; set; }
+		public string Name { get; set; }
+		public string Surname { get; set; }
+		public string Address { get; set; }
+		public string Gender { get; set; }
 		public List<Car> cars;
 
 		public Person(string username, string name, string surname, string address, string gender)
 		{
+			this.id = id++;
 			this.username = username;
 			this.name = name;
 			this.surname = surname;

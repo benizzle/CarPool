@@ -45,14 +45,21 @@
   <ItemGroup>
     <Compile Include="Car.cs" />
     <Compile Include="Carpool.cs" />
+    <Compile Include="CarPoolAppLogic.cs" />
     <Compile Include="CSVHandler.cs" />
     <Compile Include="Drive.cs" />
     <Compile Include="Person.cs" />
+    <Compile Include="PersonManager.cs" />
+    <Compile Include="PoolPerson.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="managers\" />
+    <Folder Include="models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
