@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft
 {
-	internal class Car
+	public class Car
 	{
 		public string model;
 		public int seatNumber;

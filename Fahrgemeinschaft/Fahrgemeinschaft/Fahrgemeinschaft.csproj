@@ -46,8 +46,11 @@
     <Compile Include="Car.cs" />
     <Compile Include="Carpool.cs" />
     <Compile Include="CarPoolAppLogic.cs" />
+    <Compile Include="CarpoolManager.cs" />
     <Compile Include="CSVHandler.cs" />
     <Compile Include="Drive.cs" />
+    <Compile Include="DriveManager.cs" />
+    <Compile Include="PathManager.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonManager.cs" />
     <Compile Include="PoolPerson.cs" />

@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft
 {
-	internal class PoolPerson
+	public class PoolPerson
 	{
-		public List<int> PoolPersons { get; set; }
+		public List<string> PoolPersons { get; set; }
 
-		public List<int> CreatePoolPersonList(List<Carpool> carpools)
+		public List<string> CreatePoolPersonList(List<Carpool> carpools)
 		{
+			//foreach foreach falsch?
 			foreach (Carpool carpool in carpools)
 			{
 				foreach (Person passenger in carpool.passengers)
 				{
-					PoolPersons.Add(passenger.id);
+					PoolPersons.Add(passenger.Username);
 				}
 			}
 			return PoolPersons;

@@ -6,25 +6,29 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft
 {
-	internal class Carpool
+	public class Carpool
 	{
 		public int carpoolId;
 		private int NumberOfPassenger;
 		public double price;
 		public int NumberOfDrives;
-		public int driverID;
+		public Person driver;
+		public string destination;
 		public List<Drive> drives;
 		public List<Person> passengers;
 		//public List<PoolPerson> personcarpool;
 
-		public Carpool(Person person, double price)
+		public Carpool(Person person, double price, string destination)
 		{
 			this.carpoolId = carpoolId++;
-			this.drives = new List<Drive>();
-			this.NumberOfDrives = 0;
-			this.price = price;
 			this.driver = person;
+			this.destination = destination;
+			this.price = price;
+			this.NumberOfPassenger = 0;
+			this.NumberOfDrives = 0;
+			this.drives = new List<Drive>();
 			this.passengers = new List<Person>();
+			
 			//this.personcarpool = new List<PoolPerson>();
 			//this.personcarpool.Where(e=>e["carpoolid"] == id)
 		}

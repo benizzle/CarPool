@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft
 {
-	internal class Person
+	public class Person
 	{
-		public int Id { get; set; }
 		public string Username { get; set; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
@@ -20,17 +19,17 @@ namespace Fahrgemeinschaft
 
 		public Person(string username, string name, string surname, string address, string gender)
 		{
-			this.id = id++;
-			this.username = username;
-			this.name = name;
-			this.surname = surname;
-			this.address = address;
-			this.gender = gender;
+			//Keine ID erstellen, username ist eindeutig!
+			this.Username = username;
+			this.Name = name;
+			this.Surname = surname;
+			this.Address = address;
+			this.Gender = gender;
 			this.cars = new List<Car>();
 		}
 		public override string ToString()
 		{
-			return $"\"{this.username}\";\"{this.name}\";\"{this.surname}\";\"{this.address}\";\"{this.gender}\"";
+			return $"\"{this.Username}\";\"{this.Name}\";\"{this.Surname}\";\"{this.Address}\";\"{this.Gender}\"";
 		}
 		
 		public void GetCarList(List<Car> cars)

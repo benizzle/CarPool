@@ -11,22 +11,16 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft
 {
-	internal class Program
+	public class Program
 	{
-		public static List<Carpool> carpools = new List<Carpool>();
-		public static List<Person> users = new List<Person>();
+		//public static List<Carpool> carpools = new List<Carpool>();
+		//public static List<Person> users = new List<Person>();
 		public static Person currentuser = null;
 		public static Carpool currentcarpool = null;
+		public static PersonManager personManager = new PersonManager();
 
-		public static string path1 = @"C:\\repos\\Fahrgemeinschaft\\PersonList.csv";
-		//public static string path2 = @"C:\\repos\\Fahrgemeinschaft\\CarpoolList.csv";
 		static void Main(string[] args)
 		{
-			List<string> userlist = CSVHandler.ReadCsv(path1);
-			users = SetPersonList(userlist);
-			//List<string> carpoollist = CSVHandler.ReadCsv(path1);
-			//users = SetCarpoolList(carpoollist);
-
 			while (true)
 			{
 				while (currentuser == null)
@@ -49,7 +43,7 @@ namespace Fahrgemeinschaft
 				Console.WriteLine("Usermenu");
 				Console.WriteLine("1: Add car");
 				Console.WriteLine("2: List your cars");
-				Console.WriteLine("3: Add new carpool");
+				Console.WriteLine("3: Add new carpool"); //muss nur mit auto gehen 
 				Console.WriteLine("4: List/manage carpools");
 				Console.WriteLine("5: Add/Change driver");
 				Console.WriteLine("6: Add new passenger");
@@ -61,12 +55,11 @@ namespace Fahrgemeinschaft
 				userChoice = Convert.ToInt32(Console.ReadLine());
 				switch (userChoice)
 				{
-					case 0:	//logout
+					case 0:	//logout + save
 						currentuser = null;
 						currentcarpool = null;
-						var listOfUsers = GetPersonStringList(users);
-						//var listOfUsers2 = users.Where(person => person.username == "Schmidt").Select(person => person.ToString());
-						CSVHandler.WriteCsv(listOfUsers, path1);
+						var listOfUsers = personManager.GetPersonStringList(personManager.Persons);
+						CSVHandler.WriteCsv(listOfUsers, PathManager.PersonPath);
 						break;
 					case 1: //Add car
 						Console.WriteLine("Add car: Model?");
@@ -78,8 +71,8 @@ namespace Fahrgemeinschaft
 							Console.WriteLine("Add car: Fuel consumption? (7 is normal)");
 							double uFuel = Convert.ToDouble(Console.ReadLine());
 
-							Car myCar = new Car(uCarModel, uSeatNumber, uFuel);
-							currentuser.cars.Add(myCar);
+							CarPoolAppLogic.AddNewCar(currentuser, uCarModel, uSeatNumber, uFuel);
+							
 							Console.WriteLine("Car added!");
 						}
 						catch (Exception)
@@ -263,65 +256,86 @@ namespace Fahrgemeinschaft
 				Console.WriteLine(" ");
 				Console.WriteLine("1: Login");
 				Console.WriteLine("2: Register");
-
-				int uInput = Convert.ToInt16(Console.ReadLine());
-
-				if (uInput == 1)
+				try
 				{
-					Console.WriteLine("Login: Enter Username: ");
-					string loginname = Console.ReadLine();
-					foreach (Person user in users)
+					int uInput = Convert.ToInt16(Console.ReadLine());
+
+					if (uInput == 1)
 					{
-						if (loginname == user.username)
+						Console.WriteLine("Login: Enter Username: ");
+						string loginname = Console.ReadLine();
+						Person loginuser = personManager.LoginExist(loginname);
+						if (loginname == loginuser.Username)
 						{
-							currentuser = user;
+							currentuser = loginuser;
 							Console.WriteLine("Logged in!");
 						}
+						if (currentuser == null)
+						{
+							Console.WriteLine("!!! Error - User don't exist!");
+						}
 					}
-					if (currentuser == null)
+					else if (uInput == 2)
 					{
-						Console.WriteLine("!!! Error - User don't exist!");
+						Console.WriteLine("Enter Username: ");
+						string loginname = Console.ReadLine();
+						Person loginuser = personManager.LoginExist(loginname);
+						if (loginname == loginuser.Username)
+						{
+							Console.WriteLine("Username already exist, choose another one");
+						}
+						else
+						{
+							Console.WriteLine("Enter name: ");
+							string uName = (Console.ReadLine());
+							Console.WriteLine("Enter surname: ");
+							string uSurname = (Console.ReadLine());
+							Console.WriteLine("We need your address please: ");
+							string uAddress = (Console.ReadLine());
+							Console.WriteLine("And your gender please: m/w/d");
+							string uGender = (Console.ReadLine());
+							Person user1 = new Person(loginname, uName, uSurname, uAddress, uGender);
+							personManager.Persons.Add(user1);
+						}
 					}
 				}
-				else if (uInput == 2)
+				catch (Exception)
 				{
-					AddPerson();
-					var listOfUsers = GetPersonStringList(users);
-					//var listOfUsers2 = users.Where(person => person.username == "Schmidt").Select(person => person.ToString());
-					CSVHandler.WriteCsv(listOfUsers, path1);
+					Console.WriteLine("!!! Error - User don't exist!");
 				}
 			}
 		}
-		public static void AddPerson()
-		{
-			bool x = true;
-			Console.WriteLine("Username: ");
-			string reguser = Console.ReadLine();
-			foreach (Person person in users)
-			{
-				if (reguser == person.username)
-				{
-					x = false;
-				}
-			}
-			if (x == true)
-			{
-				Console.WriteLine("Enter name: ");
-				string uName = (Console.ReadLine());
-				Console.WriteLine("Enter surname: ");
-				string uSurname = (Console.ReadLine());
-				Console.WriteLine("We need your address please: ");
-				string uAddress = (Console.ReadLine());
-				Console.WriteLine("And your gender please: m/w/d");
-				string uGender = (Console.ReadLine());
-				Person user1 = new Person(reguser, uName, uSurname, uAddress, uGender);
-				currentcarpool.passengers.Add(user1);
-			}
-			else 
-			{ 
-				Console.WriteLine("!!! Error - User already exist !!!"); 
-			}
-		}
+		//public static void AddPerson(string username)
+		//{
+		//	//muss halb in PersonManager
+		//	bool x = true;
+		//	Console.WriteLine("Username: ");
+		//	string reguser = Console.ReadLine();
+		//	foreach (Person person in users)
+		//	{
+		//		if (reguser == person.Username)
+		//		{
+		//			x = false;
+		//		}
+		//	}
+		//	if (x == true)
+		//	{
+		//		Console.WriteLine("Enter name: ");
+		//		string uName = (Console.ReadLine());
+		//		Console.WriteLine("Enter surname: ");
+		//		string uSurname = (Console.ReadLine());
+		//		Console.WriteLine("We need your address please: ");
+		//		string uAddress = (Console.ReadLine());
+		//		Console.WriteLine("And your gender please: m/w/d");
+		//		string uGender = (Console.ReadLine());
+		//		Person user1 = new Person(reguser, uName, uSurname, uAddress, uGender);
+		//		currentcarpool.passengers.Add(user1);
+		//	}
+		//	else 
+		//	{ 
+		//		Console.WriteLine("!!! Error - User already exist !!!"); 
+		//	}
+		//}
 		
 		public static List<Person> SetPersonList(List<string> list)
 		{
@@ -336,18 +350,10 @@ namespace Fahrgemeinschaft
 			}
 			return users;
 		}
-		public static List<string> GetPersonStringList(List<Person> users)
-		{
-			List<string> list = new List<string>();
-
-			foreach (var person in users)
-			{
-				list.Add(person.ToString());
-			}
-			return list;
-		}
+		
 		static void GetCarpools()
 		{
+			//neu machen wegen passenger abfrage(oder doch nicht, nur bei speicherung in csv?)
 			int i = 0;
 			int j = 0;
 			Console.WriteLine("List of carpools:");
@@ -355,18 +361,19 @@ namespace Fahrgemeinschaft
 			{
 				i++;
 				Console.WriteLine($"Carpool Nr.{i}");
-				Console.WriteLine($"Driver: {carpool.driver.name} {carpool.driver.surname}");
+				Console.WriteLine($"Driver: {carpool.driverID.name} {carpool.driverID.surname}");
 				Console.WriteLine($"Price: {carpool.price}");
 				Console.WriteLine($"Number of drives: {carpool.NumberOfDrives}");
 				foreach (Person person in carpool.passengers)
 				{
 					j++;
-					Console.WriteLine($"Passenger {j}: {person.name} {person.surname}, {person.address} Gender: {person.gender}");
+					Console.WriteLine($"Passenger {j}: {person.Name} {person.Surname}, {person.Address} Gender: {person.Gender}");
 				}
 			}
 		}
 		static void AddCarpool()
 		{
+			//noch destination hinzufügen
 			Console.WriteLine("Add carpool: Add price!");
 			double newprice = Convert.ToDouble(Console.ReadLine());
 
@@ -393,7 +400,7 @@ namespace Fahrgemeinschaft
 					{
 						int k = 0;
 						k++;
-						Console.WriteLine($"Passenger {k}: {person.name} {person.surname}, {person.address} Gender: {person.gender}");
+						Console.WriteLine($"Passenger {k}: {person.Name} {person.Surname}, {person.Address} Gender: {person.Gender}");
 					}
 
 				}
@@ -406,13 +413,13 @@ namespace Fahrgemeinschaft
 		static void DriverChange()
 		{
 			Console.WriteLine("Change driver");
-			Console.WriteLine($"Current driver: {currentcarpool.driver}");
+			Console.WriteLine($"Current driver: {currentcarpool.driverID}");
 			int j = 0;
 			Console.WriteLine("List of passengers:");
 			foreach (Person person in currentcarpool.passengers)
 			{
 				j++;
-				Console.WriteLine($"Passenger {j}: {person.name} {person.surname}, {person.address} Gender: {person.gender}");
+				Console.WriteLine($"Passenger {j}: {person.Name} {person.Surname}, {person.Address} Gender: {person.Gender}");
 			}
 			Console.WriteLine("Wich one would you set as driver? Enter the number!");
 			try

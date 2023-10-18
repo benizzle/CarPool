@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft
 {
-	internal class Drive
+	public class Drive
 	{
 		public string startPosition;
 		public string destination;
 		public double distance;
+		public Person driver;
+
 		public DateTime startTime;
+		//wer ist fahrer, wer fährt mit, 
 
 		public Drive(string startPosition, string destination, double distance, DateTime startTime)
 		{
