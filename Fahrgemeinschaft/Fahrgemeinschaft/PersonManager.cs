@@ -12,34 +12,32 @@ namespace Fahrgemeinschaft
         {
 			var listOFLines = CSVHandler.ReadCsv(PathManager.PersonPath);
 			if (!listOFLines.Any())
+			{
 				this.Persons = new List<Person>();
-			// convert list of strings to list of persons
+			}
+			else
+			{
+				this.Persons = new List<Person>();
+				foreach (var line in listOFLines)
+				{
+					string[] items = line.Split(';');
+					Person person = new Person(items[0].Trim('"'), items[1].Trim('"'), items[2].Trim('"'), items[3].Trim('"'), items[4].Trim('"'));
+					this.Persons.Add(person);
+				}
+			}
+
 		}
 
-		public List<string> GetPersonStringList(List<Person> Persons)
+		public List<string> GetPersonStringList(List<Person> plist)
 		{
 			List<string> list = new List<string>();
 
-			foreach (var person in Persons)
+			foreach (Person p in plist)
 			{
-				list.Add(person.ToString());
+				list.Add(p.ToString());
 			}
 			return list;
 		}
-
-		public Person LoginExist(string user)
-		{
-			Person currentuser = null;
-			foreach (Person person in Persons)
-			{
-				if (user == person.Username)
-				{
-					currentuser = person;
-				}
-			}
-			return currentuser;
-		}
-
 
 		public void GetAll()
 		{

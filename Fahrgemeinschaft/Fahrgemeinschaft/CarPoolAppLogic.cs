@@ -5,25 +5,34 @@ namespace Fahrgemeinschaft
 {
 	public class CarPoolAppLogic
 	{
-		private PersonManager _personManager;
+		//private PersonManager _personManager;
+		public CarPoolAppLogic carpoolAppLogic;
+
 		public CarPoolAppLogic()
         {
-			this._personManager = new PersonManager();
-        }
+			//this._personManager = new PersonManager();
+			this.carpoolAppLogic = new CarPoolAppLogic();
 
-		void CreateNewCarPool(Person driver, string destination, double price)
+		}
+
+		public static Person LoginExist(string user)
 		{
+			Person checkperson = null;
+			foreach (Person person in Program.personManager.Persons)
+			{
+				if (user == person.Username)
+				{
+					checkperson = person;
+				}
+			}
+			return checkperson;
+		}
 
+		public static void CreateNewCarPool(Person driver, string destination, double price)
+		{
 			Carpool newCarpool = new Carpool(driver, price, destination);
-			CarpoolManager.carpools.Add(newCarpool);
+			Program.carpoolManager.carpools.Add(newCarpool);
 			Program.currentcarpool = newCarpool;
-
-
-
-
-
-				
-			
 		}
 
 		internal static void AddNewCar(Person person, string model, int seatNumber, double fuelConsumption)
@@ -31,11 +40,13 @@ namespace Fahrgemeinschaft
 			Car car = new Car(model, seatNumber, fuelConsumption);
 			person.cars.Add(car);
 		}
+
 		public static List<Car> GetCarList(Person person)
 		{
-			return Program.currentuser.cars;
+			return person.cars;
 		}
-		void AddNewPersonToCarPool(Person person, int carpoolid)
+
+		void AddNewPersonToCarPool(Person person)
 		{
 			// check if person exists
 			//		if not add person
@@ -50,9 +61,9 @@ namespace Fahrgemeinschaft
 
 		}
 
-		void AddNewDrive(int driverID, Drive drive)
+		public static void AddNewDrive(Drive drive)
 		{
-			this._personManager.GetById(driverID);
+			Program.currentcarpool.drives.Add(drive);
 		}
 		void AddNewPerson(Person driver, Drive drive)
 		{
