@@ -5,20 +5,19 @@ namespace Fahrgemeinschaft
 {
 	public class CarPoolAppLogic
 	{
-		//private PersonManager _personManager;
-		public CarPoolAppLogic carpoolAppLogic;
+		private PersonManager _personManager;
+		private CarpoolManager _carpoolManager;
 
-		public CarPoolAppLogic()
+		public CarPoolAppLogic(PersonManager personManager, CarpoolManager carpoolManager)
         {
-			//this._personManager = new PersonManager();
-			this.carpoolAppLogic = new CarPoolAppLogic();
-
+			this._personManager = personManager ?? new PersonManager();
+			this._carpoolManager = carpoolManager ?? new CarpoolManager();
 		}
 
-		public static Person LoginExist(string user)
+		public Person LoginExist(string user)
 		{
 			Person checkperson = null;
-			foreach (Person person in Program.personManager.Persons)
+			foreach (Person person in this._personManager.Persons)
 			{
 				if (user == person.Username)
 				{
@@ -28,10 +27,10 @@ namespace Fahrgemeinschaft
 			return checkperson;
 		}
 
-		public static void CreateNewCarPool(Person driver, string destination, double price)
+		public void CreateNewCarPool(Person driver, string destination, double price)
 		{
 			Carpool newCarpool = new Carpool(driver, price, destination);
-			Program.carpoolManager.carpools.Add(newCarpool);
+			this._carpoolManager.carpools.Add(newCarpool);
 			Program.currentcarpool = newCarpool;
 		}
 
@@ -65,11 +64,13 @@ namespace Fahrgemeinschaft
 		{
 			Program.currentcarpool.drives.Add(drive);
 		}
+
 		void AddNewPerson(Person driver, Drive drive)
 		{
 			// schritt 1
 
 		}
+
 		void DeletePeopleFromCarPool(List<int> driverIds)
 		{
 			foreach (int driverID in driverIds)

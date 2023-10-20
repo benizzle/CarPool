@@ -28,10 +28,10 @@ namespace Fahrgemeinschaft
 			this.NumberOfDrives = 0;
 			this.drives = new List<Drive>();
 			this.passengers = new List<Person>();
-			
 			//this.personcarpool = new List<PoolPerson>();
 			//this.personcarpool.Where(e=>e["carpoolid"] == id)
 		}
+
 		public void ChangeDriver(Person user)
 		{
 			this.driver = user;

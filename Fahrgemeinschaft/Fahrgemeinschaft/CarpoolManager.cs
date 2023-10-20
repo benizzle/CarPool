@@ -8,7 +8,7 @@ namespace Fahrgemeinschaft
 {
 	public class CarpoolManager
 	{
-		public List<Carpool> carpools;										//evtl static machen
+		public List<Carpool> carpools;
 
         public CarpoolManager()
         {

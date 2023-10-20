@@ -18,7 +18,7 @@ namespace Fahrgemeinschaft
 		public static Carpool currentcarpool = null;
 		public static PersonManager personManager = new PersonManager();
 		public static CarpoolManager carpoolManager = new CarpoolManager();
-		//public static CarPoolAppLogic carpoolAppLogic = new CarPoolAppLogic();
+		public static CarPoolAppLogic carpoolAppLogic = new CarPoolAppLogic(personManager, carpoolManager);
 		public static bool go = true;
 
 		static void Main(string[] args)
@@ -107,7 +107,7 @@ namespace Fahrgemeinschaft
 							string destination = Console.ReadLine();
 							Console.WriteLine("Please enter the price - standard (3-5), business (6-9), luxury (10-20)");
 							double price = Convert.ToDouble(Console.ReadLine());
-							CarPoolAppLogic.CreateNewCarPool(currentuser, destination, price);
+							carpoolAppLogic.CreateNewCarPool(currentuser, destination, price);
 							Console.WriteLine("New carpool created and set as your current carpool");
 						}
 						else 
@@ -176,11 +176,19 @@ namespace Fahrgemeinschaft
 
 							ChooseCarpool();
 
-							AddDrive();
+
+
+
+
+							//AddDrive(); addperson nur für login
 						}
 						else if (carpoolManager.carpools.Count() == 1)
 						{
-							AddDrive();
+
+
+
+
+							//AddDrive(); addperson nur für login
 						}
 						else
 						{
@@ -225,8 +233,8 @@ namespace Fahrgemeinschaft
 					{
 						Console.WriteLine("Login: Enter Username: ");
 						string loginname = Console.ReadLine();
-						loginuser = CarPoolAppLogic.LoginExist(loginname);						
-						if (currentuser == null)
+						loginuser = carpoolAppLogic.LoginExist(loginname);						
+						if (loginuser == null)
 						{
 							Console.WriteLine("!!! Error - User don't exist!");
 						}
@@ -238,9 +246,7 @@ namespace Fahrgemeinschaft
 					}
 					if (uInput == 2)
 					{
-						AddPerson();
-						int i = personManager.Persons.Count() - 1;
-						currentuser = personManager.Persons[i];
+						AddPerson();						
 					}
 				}
 				catch (Exception)
@@ -253,10 +259,9 @@ namespace Fahrgemeinschaft
 		{
 			Console.WriteLine("Enter Username: ");
 			string loginname = Console.ReadLine();
-			Person loginuser = CarPoolAppLogic.LoginExist(loginname);
+			Person loginuser = carpoolAppLogic.LoginExist(loginname);
 			if (loginuser == null)
-			{
-				//Console.WriteLine("Username already exist, choose another one");
+			{				
 				Console.WriteLine("Enter name: ");
 				string uName = (Console.ReadLine());
 				Console.WriteLine("Enter surname: ");
@@ -267,20 +272,11 @@ namespace Fahrgemeinschaft
 				string uGender = (Console.ReadLine());
 				Person user1 = new Person(loginname, uName, uSurname, uAddress, uGender);
 				personManager.Persons.Add(user1);
+				currentuser = user1;
 			}
 			else
 			{
-				Console.WriteLine("Username already exist, choose another one");
-				//Console.WriteLine("Enter name: ");
-				//string uName = (Console.ReadLine());
-				//Console.WriteLine("Enter surname: ");
-				//string uSurname = (Console.ReadLine());
-				//Console.WriteLine("We need your address please: ");
-				//string uAddress = (Console.ReadLine());
-				//Console.WriteLine("And your gender please: m/w/d");
-				//string uGender = (Console.ReadLine());
-				//Person user1 = new Person(loginname, uName, uSurname, uAddress, uGender);
-				//personManager.Persons.Add(user1);
+				Console.WriteLine("Username already exist, choose another one");				
 			}
 		}
 		public static void ManageCarpoolMenu()
@@ -370,7 +366,7 @@ namespace Fahrgemeinschaft
 			}
 		}
 
-		//public static void AddPerson(string username)
+		//public static void AddPerson(string username)								//noch behalten bis ADDPESSENGER fertig ist --- addperson nur für login
 		//{
 		//	//muss halb in PersonManager
 		//	bool x = true;
@@ -402,19 +398,19 @@ namespace Fahrgemeinschaft
 		//	}
 		//}
 		
-		public static List<Person> SetPersonList(List<string> list)
-		{
-			List<Person> users = new List<Person>();
+		//public static List<Person> SetPersonList(List<string> list)						// schon in constructor personmanager gepackt
+		//{
+		//	List<Person> users = new List<Person>();
 
-			foreach (string line in list)
-			{
-				string[] item = line.Split(';');
+		//	foreach (string line in list)
+		//	{
+		//		string[] item = line.Split(';');
 
-				Person person = new Person(item[0].Trim('"'), item[1].Trim('"'), item[2].Trim('"'), item[3].Trim('"'), item[4].Trim('"'));
-				users.Add(person);
-			}
-			return users;
-		}
+		//		Person person = new Person(item[0].Trim('"'), item[1].Trim('"'), item[2].Trim('"'), item[3].Trim('"'), item[4].Trim('"'));
+		//		users.Add(person);
+		//	}
+		//	return users;
+		//}
 		
 		//static void GetCarpools()
 		//{

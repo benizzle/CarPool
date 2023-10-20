@@ -25,7 +25,6 @@ namespace Fahrgemeinschaft
 					this.Persons.Add(person);
 				}
 			}
-
 		}
 
 		public List<string> GetPersonStringList(List<Person> plist)
@@ -49,6 +48,7 @@ namespace Fahrgemeinschaft
 		{ 
 			// read all and filter by name
 		}
+
 		public void GetByUsername(string username)
 		{
 			// read all and filter by name
