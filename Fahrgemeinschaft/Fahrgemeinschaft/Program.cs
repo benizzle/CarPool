@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data.Common;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Fahrgemeinschaft
 {
 	public class Program
 	{
+		// HIER FALSCH ABER WOHIN? public static DBManager dbManager = "Data Source=localhost;Initial Catalog=Carpool;Integrated Security=true;"
+
 		public static IPersonFunctions personManager = new PersonManager();
 		public static Person currentuser = null;
 		public static Carpool currentcarpool = null;

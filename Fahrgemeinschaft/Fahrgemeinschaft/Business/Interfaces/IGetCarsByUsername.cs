@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Business.Interfaces
 {
-	internal interface IGetCarpoolByPerson
+	internal interface IGetCarsByUsername
 	{
-		void GetCarpoolByPerson(int personId);
+		void GetCarsByUsername(string username);
 	}
 }

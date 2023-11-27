@@ -8,7 +8,7 @@ using Fahrgemeinschaft.Data.Interfaces;
 
 namespace Fahrgemeinschaft.Data
 {
-	internal interface IDataLayer : IAddCarById, IGetCarpoolsByUsername, IGetCarsByUsername, IGetDriveById, IGetPersonById, Interfaces.IGetPersons, ISaveCar, ISavePerson
+	internal interface IDataLayer : IAddCarById, IGetCarpoolsByUsername, IGetCarsByUsername, IGetDriveById, IGetPersonByUsername, Interfaces.IGetPersons, ISaveCar, ISavePerson
 	{
 	}
 }

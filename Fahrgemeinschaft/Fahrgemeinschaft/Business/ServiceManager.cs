@@ -30,7 +30,7 @@ namespace Fahrgemeinschaft.Business
 			throw new NotImplementedException();
 		}
 
-		public void GetCarpoolByPerson(int personId)
+		public void GetCarpoolByUsername(int personId)
 		{
 			throw new NotImplementedException();
 		}

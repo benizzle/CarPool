@@ -9,23 +9,25 @@ namespace Fahrgemeinschaft
 	public class Carpool
 	{
 		public int carpoolId;
-		private int NumberOfPassenger;
-		public double price;
-		public int NumberOfDrives;
 		public Person driver;
-		public string destination;
+		public string description;
 		public List<Drive> drives;
 		public List<Person> passengers;
 		//public List<PoolPerson> personcarpool;
 
-		public Carpool(Person person, double price, string destination)
+		public Carpool(Person person, string description)
 		{
-			this.carpoolId = carpoolId++;
 			this.driver = person;
-			this.destination = destination;
-			this.price = price;
-			this.NumberOfPassenger = 0;
-			this.NumberOfDrives = 0;
+			this.description = description;
+			this.drives = new List<Drive>();
+			this.passengers = new List<Person>();
+			//this.personcarpool = new List<PoolPerson>();
+			//this.personcarpool.Where(e=>e["carpoolid"] == id)
+		}
+		public Carpool(int carpoolId, Person driver, string description)
+		{
+			this.driver = driver;
+			this.description = description;
 			this.drives = new List<Drive>();
 			this.passengers = new List<Person>();
 			//this.personcarpool = new List<PoolPerson>();
