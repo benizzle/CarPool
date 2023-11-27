@@ -43,26 +43,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Car.cs" />
-    <Compile Include="Carpool.cs" />
-    <Compile Include="CarPoolAppLogic.cs" />
-    <Compile Include="CarpoolManager.cs" />
-    <Compile Include="CSVHandler.cs" />
-    <Compile Include="Drive.cs" />
-    <Compile Include="DriveManager.cs" />
-    <Compile Include="PathManager.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="PersonManager.cs" />
-    <Compile Include="PoolPerson.cs" />
+    <Compile Include="Business\IServiceManager.cs" />
+    <Compile Include="Business\Interfaces\IAddCarToPerson.cs" />
+    <Compile Include="Business\Interfaces\ICreateCarpool.cs" />
+    <Compile Include="Business\Interfaces\IAddPersonToCarpool.cs" />
+    <Compile Include="Business\Interfaces\ICreatePerson.cs" />
+    <Compile Include="Business\Interfaces\IGetCarpoolByPerson.cs" />
+    <Compile Include="Business\Interfaces\IGetCarsByPerson.cs" />
+    <Compile Include="Business\Interfaces\IGetPersons.cs" />
+    <Compile Include="Business\Interfaces\IRemovePersonFromCarpool.cs" />
+    <Compile Include="Business\IServiceManagerManager.cs" />
+    <Compile Include="Business\Models\Car.cs" />
+    <Compile Include="Business\Models\Carpool.cs" />
+    <Compile Include="Business\CarPoolAppLogic.cs" />
+    <Compile Include="Business\CarpoolManager.cs" />
+    <Compile Include="Business\ServiceManager.cs" />
+    <Compile Include="Data\DBManager.cs" />
+    <Compile Include="Data\CSVHandler.cs" />
+    <Compile Include="Business\Models\Drive.cs" />
+    <Compile Include="Business\DriveManager.cs" />
+    <Compile Include="Data\IDataLayer.cs" />
+    <Compile Include="Data\Interfaces\IAddCarById.cs" />
+    <Compile Include="Data\Interfaces\IGetCarpoolsByUsername.cs" />
+    <Compile Include="Data\Interfaces\IGetCarsByUsername.cs" />
+    <Compile Include="Data\Interfaces\IGetDriveById.cs" />
+    <Compile Include="Data\Interfaces\IGetPersonById.cs" />
+    <Compile Include="Data\Interfaces\IGetPersons.cs" />
+    <Compile Include="Data\Interfaces\ISaveCar.cs" />
+    <Compile Include="Data\Interfaces\ISavePerson.cs" />
+    <Compile Include="Data\Models\CarEntity.cs" />
+    <Compile Include="Data\Models\CarpoolEntity.cs" />
+    <Compile Include="Data\Models\DriveEntity.cs" />
+    <Compile Include="Data\Models\PersonEntity.cs" />
+    <Compile Include="Data\Models\PersonInDriveEntity.cs" />
+    <Compile Include="Data\Models\PersonsCarpoolEntity.cs" />
+    <Compile Include="Data\PathManager.cs" />
+    <Compile Include="Business\Models\Person.cs" />
+    <Compile Include="Business\PersonManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="managers\" />
-    <Folder Include="models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,14 +9,16 @@ using System.Linq.Expressions;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using Fahrgemeinschaft.Business;
 
 namespace Fahrgemeinschaft
 {
 	public class Program
 	{
+		public static IPersonFunctions personManager = new PersonManager();
 		public static Person currentuser = null;
 		public static Carpool currentcarpool = null;
-		public static PersonManager personManager = new PersonManager();
+		//public static PersonManager personManager = new PersonManager();
 		public static CarpoolManager carpoolManager = new CarpoolManager();
 		public static CarPoolAppLogic carpoolAppLogic = new CarPoolAppLogic(personManager, carpoolManager);
 		public static bool go = true;
@@ -35,6 +37,45 @@ namespace Fahrgemeinschaft
 				}
 			}
 		}
+		static void LoginMenu()
+		{
+			Console.WriteLine("Welcome to Fahrgemeinschaft!");
+
+			while (currentuser == null)
+			{
+				Console.WriteLine(" ");
+				Console.WriteLine("1: Login");
+				Console.WriteLine("2: Register");
+				try
+				{
+					int uInput = Convert.ToInt16(Console.ReadLine());
+					Person logUser;
+					if (uInput == 1)
+					{
+						Console.WriteLine("Login: Enter Username: ");
+						string logName = Console.ReadLine();
+						logUser = carpoolAppLogic.LoginExist(logName);
+						if (logUser == null)
+						{
+							Console.WriteLine("!!! Error - User don't exist!");
+						}
+						else
+						{
+							currentuser = logUser;
+							Console.WriteLine("Logged in!");
+						}
+					}
+					if (uInput == 2)
+					{
+						AddPerson();
+					}
+				}
+				catch (Exception)
+				{
+					Console.WriteLine("!!! Error - User don't exist!");
+				}
+			}
+		}
 
 		static void UserMenu()
 		{
@@ -47,7 +88,7 @@ namespace Fahrgemeinschaft
 				Console.WriteLine("2: List your cars");
 				Console.WriteLine("3: Add new carpool");
 				Console.WriteLine("4: List/manage carpools");
-				Console.WriteLine("5: Change driver");
+				Console.WriteLine("5: Change driver");														//noch rausnehmen?
 				Console.WriteLine("6: Add new passenger");
 				Console.WriteLine("7: Create new Drive");
 				Console.WriteLine("8: List Drives");
@@ -60,8 +101,7 @@ namespace Fahrgemeinschaft
 					case 0:	//logout + save
 						currentuser = null;
 						currentcarpool = null;
-						var listOfUsers = personManager.GetPersonStringList(personManager.Persons);
-						CSVHandler.WriteCsv(listOfUsers, PathManager.PersonPath);
+						var listOfUsers = personManager.GetPersons();
 						//go = false;
 						break;
 					case 1: //Add car
@@ -101,7 +141,7 @@ namespace Fahrgemeinschaft
 						}
 						break;
 					case 3: //Add new carpool
-						if (currentuser.cars.Count() > 0)
+						if (currentuser.Cars.Count() > 0)
 						{
 							Console.WriteLine("Please enter the destination for your new carpool");
 							string destination = Console.ReadLine();
@@ -159,10 +199,18 @@ namespace Fahrgemeinschaft
 							ChooseCarpool();
 
 							AddPerson();
+
+							Person newPerson = personManager.GetLastAdded();
+
+							CarPoolAppLogic.AddNewPersonToCarPool(newPerson);
 						}
 						else if (carpoolManager.carpools.Count() == 1)
 						{
 							AddPerson();
+
+							Person newPerson = personManager.GetLastAdded();
+
+							CarPoolAppLogic.AddNewPersonToCarPool(newPerson);
 						}						
 						else
 						{
@@ -176,19 +224,11 @@ namespace Fahrgemeinschaft
 
 							ChooseCarpool();
 
-
-
-
-
-							//AddDrive(); addperson nur für login
+							AddDrive();
 						}
 						else if (carpoolManager.carpools.Count() == 1)
 						{
-
-
-
-
-							//AddDrive(); addperson nur für login
+							AddDrive();
 						}
 						else
 						{
@@ -216,45 +256,7 @@ namespace Fahrgemeinschaft
 				}
 			}
 		}
-		static void LoginMenu()
-		{
-			Console.WriteLine("Welcome to Fahrgemeinschaft!");
 
-			while (currentuser == null)
-			{
-				Console.WriteLine(" ");
-				Console.WriteLine("1: Login");
-				Console.WriteLine("2: Register");
-				try
-				{
-					int uInput = Convert.ToInt16(Console.ReadLine());
-					Person loginuser;
-					if (uInput == 1)
-					{
-						Console.WriteLine("Login: Enter Username: ");
-						string loginname = Console.ReadLine();
-						loginuser = carpoolAppLogic.LoginExist(loginname);						
-						if (loginuser == null)
-						{
-							Console.WriteLine("!!! Error - User don't exist!");
-						}
-						else
-						{
-							currentuser = loginuser;
-							Console.WriteLine("Logged in!");
-						}
-					}
-					if (uInput == 2)
-					{
-						AddPerson();						
-					}
-				}
-				catch (Exception)
-				{
-					Console.WriteLine("!!! Error - User don't exist!");
-				}
-			}
-		}
 		public static void AddPerson()
 		{
 			Console.WriteLine("Enter Username: ");
@@ -317,7 +319,7 @@ namespace Fahrgemeinschaft
 		public static void ChooseCarpool()
 		{
 			int i = -1;
-			while (i < 0 && i > carpoolManager.carpools.Count())
+			while (i < 0 || i > carpoolManager.carpools.Count())
 			{
 				Console.WriteLine("Choose your carpool: Enter the number");
 				try

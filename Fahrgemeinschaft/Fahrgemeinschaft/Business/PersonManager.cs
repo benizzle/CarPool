@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fahrgemeinschaft.Business;
 
 namespace Fahrgemeinschaft
 {
-	public class PersonManager
+	public class PersonManager : IServiceManagerManager
 	{
 		public List<Person> Persons;
 
         public PersonManager()
         {
+
 			var listOFLines = CSVHandler.ReadCsv(PathManager.PersonPath);
 			if (!listOFLines.Any())
 			{
@@ -38,29 +40,12 @@ namespace Fahrgemeinschaft
 			return list;
 		}
 
-		public void GetAll()
+		public Person GetLastAdded()
 		{
-			CSVHandler.ReadCsv(PathManager.PersonPath);
-				// read all from csv	
+			int lastElement = this.Persons.Count() - 1;
+			Person lastPerson = this.Persons[lastElement];
+			return lastPerson;
 		}
 
-		void GetByName()
-		{ 
-			// read all and filter by name
-		}
-
-		public void GetByUsername(string username)
-		{
-			// read all and filter by name
-		}
-
-		//void AddSingle()
-		//{
-		//	CSVHandler.ReadCsv(PathManager.PersonPath);
-		//	// read all
-		//	// append new
-		//	// write all
-
-		//}
 	}
 }

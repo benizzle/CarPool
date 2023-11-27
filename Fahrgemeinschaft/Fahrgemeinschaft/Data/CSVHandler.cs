@@ -6,10 +6,11 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using Fahrgemeinschaft.Business;
 
 namespace Fahrgemeinschaft
 {
-	public class CSVHandler
+	public class CSVHandler : IPersonFunctions
 	{
 
 		public static void WriteCsv(List<string> list , string path)
@@ -35,6 +36,16 @@ namespace Fahrgemeinschaft
 				}
 			}
 			return lines;
+		}
+
+		public List<Person> GetPersons()
+		{
+			throw new NotImplementedException();
+		}
+
+		public List<Car> GetCarsByPersonId(int personId)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

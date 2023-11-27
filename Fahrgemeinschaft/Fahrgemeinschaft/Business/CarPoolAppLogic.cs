@@ -37,19 +37,17 @@ namespace Fahrgemeinschaft
 		internal static void AddNewCar(Person person, string model, int seatNumber, double fuelConsumption)
 		{
 			Car car = new Car(model, seatNumber, fuelConsumption);
-			person.cars.Add(car);
+			person.Cars.Add(car);
 		}
 
 		public static List<Car> GetCarList(Person person)
 		{
-			return person.cars;
+			return person.Cars;
 		}
 
-		void AddNewPersonToCarPool(Person person)
+		public static void AddNewPersonToCarPool(Person person)
 		{
-			// check if person exists
-			//		if not add person
-			//		if contiue
+			//cheack if person exist
 			// check seat in carpool
 			//	 get carpool by id(carppol manager) -> total seats
 			// get persons in carpool by id
@@ -57,7 +55,7 @@ namespace Fahrgemeinschaft
 			// check if there is a seat free()
 			// -	if free seat 
 			//		add new entry personcarpool personid + carpool id
-
+			Program.currentcarpool.passengers.Add(person);
 		}
 
 		public static void AddNewDrive(Drive drive)
