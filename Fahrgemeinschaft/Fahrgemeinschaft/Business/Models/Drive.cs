@@ -8,20 +8,27 @@ namespace Fahrgemeinschaft
 {
 	public class Drive
 	{
-		public string startPosition;
+		public int? driveId;
+		public string startpoint;
 		public string destination;
-		public double distance;
-		public Person driver;
-
 		public DateTime startTime;
-		//wer ist fahrer, wer fährt mit, 
+		public DateTime endTime;
+		public double price;
+		public int carId;
+		public string driverUsername;
+		public int carpoolId;
 
-		public Drive(string startPosition, string destination, double distance, DateTime startTime)
+		public Drive(int? driveId, string startpoint, string destination, DateTime startTime, DateTime endTime, double price, int carId, string driverUsername, int carpoolId)
 		{
-			this.startPosition = startPosition;
+			this.driveId = driveId;
+			this.startpoint = startpoint;
 			this.destination = destination;
-			this.distance = distance;
 			this.startTime = startTime;
+			this.endTime = endTime;
+			this.price = price;
+			this.carId = carId;
+			this.driverUsername = driverUsername;
+			this.carpoolId = carpoolId;
 		}
 	}
 }

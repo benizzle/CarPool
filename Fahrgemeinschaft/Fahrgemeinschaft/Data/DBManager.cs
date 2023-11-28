@@ -21,26 +21,26 @@ namespace Fahrgemeinschaft
 			this.ConnectionString = connectionString;
 		}
 
-		// Entities
-		private List<PersonEntity> GetPersonEntities()		//Personenliste von DB abrufen
+		// Abfrage von Daten von Entities
+		private List<PersonEntity> GetPersonEntities()
 		{
 			List<PersonEntity> PersonEntities = new List<PersonEntity>();
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = "SELECT * FROM [Carpool].[dbo].[Person]";
+				string queryString = $@"SELECT p.Username, p.Name, p.Surname, p.Address, p.Gender
+										FROM [Carpool].[dbo].[Person] as p";	
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
 				SqlDataReader reader = command.ExecuteReader();
 
-
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					PersonEntities.Add(new PersonEntity(reader[0].ToString(), reader[1].ToString(), reader[2].ToString(), reader[3].ToString(), reader[4].ToString()));
+					PersonEntities.Add(new PersonEntity(reader["Username"].ToString(), reader["Name"].ToString(), reader["Surname"].ToString(),
+														reader["Address"].ToString(), reader["Gender"].ToString()));
 				}
-
 
 				// Call Close when done reading.
 				reader.Close();
@@ -52,7 +52,9 @@ namespace Fahrgemeinschaft
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Person] WHERE Username={username}";
+				string queryString = $@"SELECT p.Username, p.Name, p.Surname, p.Address, p.Gender
+										FROM [Carpool].[dbo].[Person] as p
+										WHERE p.Username={username}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -61,7 +63,8 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					return new PersonEntity(reader[0].ToString(), reader[1].ToString(), reader[2].ToString(), reader[3].ToString(), reader[4].ToString());
+					return new PersonEntity(reader["Username"].ToString(), reader["Name"].ToString(), reader["Surname"].ToString(),
+												reader["Address"].ToString(), reader["Gender"].ToString());
 				}
 
 				// Call Close when done reading.
@@ -73,7 +76,9 @@ namespace Fahrgemeinschaft
 		{
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Car] WHERE CarId={carId}";
+				string queryString = $@"SELECT c.CarID, c.OwnerUsername, c.Description, c.Seatnumber
+										FROM [Carpool].[dbo].[Car] as c
+										WHERE c.CarId={carId}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -82,7 +87,8 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					return new CarEntity(Convert.ToInt32(reader[0]), reader[1].ToString(), reader[2].ToString(), Convert.ToInt32(reader[3]));
+					return new CarEntity(Convert.ToInt32(reader["CarID"]), reader["OwnerUsername"].ToString(), reader["Description"].ToString(),
+											Convert.ToInt32(reader["Seatnumber"]));
 				}
 
 				// Call Close when done reading.
@@ -96,7 +102,9 @@ namespace Fahrgemeinschaft
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Car] WHERE CarId={username}";
+				string queryString = $@"SELECT c.CarID, c.OwnerUsername, c.Description, c.Seatnumber
+										FROM [Carpool].[dbo].[Car] as c
+										WHERE c.OwnerUsername={username}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -105,7 +113,8 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					CarEntities.Add(new CarEntity(Convert.ToInt32(reader[0]), reader[1].ToString(), reader[2].ToString(), Convert.ToInt32(reader[3])));
+					CarEntities.Add(new CarEntity(Convert.ToInt32(reader["CarID"]), reader["OwnerUsername"].ToString(), reader["Description"].ToString(),
+											Convert.ToInt32(reader["Seatnumber"])));
 				}
 
 				// Call Close when done reading.
@@ -119,7 +128,8 @@ namespace Fahrgemeinschaft
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = "SELECT * FROM [Carpool].[dbo].[Carpool]";
+				string queryString = $@"SELECT c.CarpoolID, c.Description
+										FROM [Carpool].[dbo].[Carpool] as c";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -128,7 +138,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					CarpoolEntities.Add(new CarpoolEntity(Convert.ToInt32(reader[0]), reader[1].ToString()));
+					CarpoolEntities.Add(new CarpoolEntity(Convert.ToInt32(reader["CarpoolID"]), reader["Description"].ToString()));
 				}
 
 				// Call Close when done reading.
@@ -140,7 +150,9 @@ namespace Fahrgemeinschaft
 		{
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Carpool] WHERE CarpoolID={carpoolId}";
+				string queryString = $@"SELECT c.CarpoolID, c.Description
+										FROM [Carpool].[dbo].[Carpool] as c
+										WHERE c.CarpoolID={carpoolId}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -149,7 +161,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					return new CarpoolEntity(Convert.ToInt32(reader[0]), reader[1].ToString());
+					return new CarpoolEntity(Convert.ToInt32(reader["CarpoolID"]), reader["Description"].ToString());
 				}
 
 				// Call Close when done reading.
@@ -163,7 +175,8 @@ namespace Fahrgemeinschaft
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = "SELECT * FROM [Carpool].[dbo].[Drive]";
+				string queryString = $@"SELECT d.DriveID, d.Startpoint, d.Destination, d.Starttime, d.Endtime, d.Price, d.CarID, d.DriverUsername, d.CarpoolID
+										FROM [Carpool].[dbo].[Drive] as d";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -172,7 +185,9 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					DriveEntities.Add(new DriveEntity(Convert.ToInt32(reader[0]), reader[1].ToString(), reader[2].ToString(), Convert.ToDateTime(reader[3]), Convert.ToDateTime(reader[4]), Convert.ToDouble(reader[5]), Convert.ToInt32(reader[6]), reader[7].ToString(), Convert.ToInt32(reader[8])));
+					DriveEntities.Add(new DriveEntity(Convert.ToInt32(reader["DriveID"]), reader["Startpoint"].ToString(), reader["Destination"].ToString(),
+														Convert.ToDateTime(reader["Starttime"]), Convert.ToDateTime(reader["Endtime"]), Convert.ToDouble(reader["Price"]),
+														Convert.ToInt32(reader["CarID"]), reader["DriverUsername"].ToString(), Convert.ToInt32(reader["CarpoolID"])));
 				}
 
 				// Call Close when done reading.
@@ -184,7 +199,9 @@ namespace Fahrgemeinschaft
 		{
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Drive] WHERE DriveID={driveId}";
+				string queryString = $@"SELECT d.DriveID, d.Startpoint, d.Destination, d.Starttime, d.Endtime, d.Price, d.CarID, d.DriverUsername, d.CarpoolID
+										FROM [Carpool].[dbo].[Drive] as d
+										WHERE d.DriveID={driveId}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -193,7 +210,9 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					return new DriveEntity(Convert.ToInt32(reader[0]), reader[1].ToString(), reader[2].ToString(), Convert.ToDateTime(reader[3]), Convert.ToDateTime(reader[4]), Convert.ToDouble(reader[5]), Convert.ToInt32(reader[6]), reader[7].ToString(), Convert.ToInt32(reader[8]));
+					return new DriveEntity(Convert.ToInt32(reader["DriveID"]), reader["Startpoint"].ToString(), reader["Destination"].ToString(),
+														Convert.ToDateTime(reader["Starttime"]), Convert.ToDateTime(reader["Endtime"]), Convert.ToDouble(reader["Price"]),
+														Convert.ToInt32(reader["CarID"]), reader["DriverUsername"].ToString(), Convert.ToInt32(reader["CarpoolID"]));
 				}
 
 				// Call Close when done reading.
@@ -207,7 +226,8 @@ namespace Fahrgemeinschaft
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = "SELECT * FROM [Carpool].[dbo].[PersonInDrive]";
+				string queryString = $@"SELECT pd.Username, pd.DriveID, pd.isDriver
+										FROM [Carpool].[dbo].[PersonInDrive] as pd";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -216,7 +236,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					PersonInDriveEntities.Add(new PersonInDriveEntity(reader[0].ToString(), Convert.ToInt32(reader[1]), Convert.ToBoolean(reader[2])));
+					PersonInDriveEntities.Add(new PersonInDriveEntity(reader["Username"].ToString(), Convert.ToInt32(reader["DriveID"]), Convert.ToBoolean(reader["isDriver"])));
 				}
 
 				// Call Close when done reading.
@@ -230,7 +250,9 @@ namespace Fahrgemeinschaft
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Drive] WHERE DriveID={driveId}";
+				string queryString = $@"SELECT pd.Username, pd.DriveID, pd.isDriver
+										FROM [Carpool].[dbo].[PersonInDrive] as pd
+										WHERE pd.DriveID={driveId}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -239,7 +261,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					PersonsByDriveId.Add(new PersonInDriveEntity(reader[0].ToString(), Convert.ToInt32(reader[1]), Convert.ToBoolean(reader[2])));
+					PersonsByDriveId.Add(new PersonInDriveEntity(reader["Username"].ToString(), Convert.ToInt32(reader["DriveID"]), Convert.ToBoolean(reader["isDriver"])));
 				}
 
 				// Call Close when done reading.
@@ -253,7 +275,9 @@ namespace Fahrgemeinschaft
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Drive] WHERE Username={username}";
+				string queryString = $@"SELECT pd.Username, pd.DriveID, pd.isDriver
+										FROM [Carpool].[dbo].[PersonInDrive] as pd
+										WHERE pd.Username={username}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -262,7 +286,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					DrivesByUsername.Add(new PersonInDriveEntity(reader[0].ToString(), Convert.ToInt32(reader[1]), Convert.ToBoolean(reader[2])));
+					DrivesByUsername.Add(new PersonInDriveEntity(reader["Username"].ToString(), Convert.ToInt32(reader["DriveID"]), Convert.ToBoolean(reader["isDriver"])));
 				}
 
 				// Call Close when done reading.
@@ -270,13 +294,14 @@ namespace Fahrgemeinschaft
 			}
 			return DrivesByUsername;
 		}
-		private List<PersonsCarpoolEntity> GetPersonsCarpoolEntities()
+		private List<PersonsCarpoolsEntity> GetPersonsCarpoolsEntities()
 		{
-			List<PersonsCarpoolEntity> PersonsCarpoolEntities = new List<PersonsCarpoolEntity>();
+			List<PersonsCarpoolsEntity> PersonsCarpoolEntities = new List<PersonsCarpoolsEntity>();
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = "SELECT * FROM [Carpool].[dbo].[PersonsCarpool]";
+				string queryString = $@"SELECT pc.Username, pc.CarpoolID
+										FROM [Carpool].[dbo].[PersonsCarpools] as pc";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -285,7 +310,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					PersonsCarpoolEntities.Add(new PersonsCarpoolEntity(reader[0].ToString(), Convert.ToInt32(reader[1])));
+					PersonsCarpoolEntities.Add(new PersonsCarpoolsEntity(reader["Username"].ToString(), Convert.ToInt32(reader["CarpoolID"])));
 				}
 
 				// Call Close when done reading.
@@ -293,13 +318,15 @@ namespace Fahrgemeinschaft
 			}
 			return PersonsCarpoolEntities;
 		}
-		private List<PersonsCarpoolEntity> GetPersonsCarpoolEntitiesByCarpoolId(int carpoolId) //alle personen von einem carpool
+		private List<PersonsCarpoolsEntity> GetPersonsCarpoolsEntitiesByCarpoolId(int carpoolId) //alle personen von einem carpool
 		{
-			List<PersonsCarpoolEntity> PersonsByCarpoolId = new List<PersonsCarpoolEntity>();
+			List<PersonsCarpoolsEntity> PersonsByCarpoolId = new List<PersonsCarpoolsEntity>();
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Drive] WHERE DriveID={carpoolId}";
+				string queryString = $@"SELECT pc.Username, pc.CarpoolID
+										FROM [Carpool].[dbo].[PersonsCarpools] as pc
+										WHERE pc.CarpoolID={carpoolId}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -308,7 +335,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					PersonsByCarpoolId.Add(new PersonsCarpoolEntity(reader[0].ToString(), Convert.ToInt32(reader[1])));
+					PersonsByCarpoolId.Add(new PersonsCarpoolsEntity(reader["Username"].ToString(), Convert.ToInt32(reader["CarpoolID"])));
 				}
 
 				// Call Close when done reading.
@@ -316,13 +343,17 @@ namespace Fahrgemeinschaft
 			}
 			return PersonsByCarpoolId;
 		}
-		private List<PersonsCarpoolEntity> GetPersonsCarpoolEntitiesByUsername(string username) //alle carpools von einer person
+		private List<Carpool> GetPersonsCarpoolsEntitiesByUsername(string username) //(GetCarpoolsByUsername) alle carpools von einer person
 		{
-			List<PersonsCarpoolEntity> CarpoolsByUsername = new List<PersonsCarpoolEntity>();
+			List<Carpool> CarpoolsByUsername = new List<Carpool>();
 
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
-				string queryString = $"SELECT * FROM [Carpool].[dbo].[Drive] WHERE Username={username}";
+				string queryString = $@"SELECT pc.CarpoolID, c.Description
+										FROM [Carpool].[dbo].[PersonsCarpools] as pc
+										RIGHT JOIN [Carpool].[dbo].[Carpool] as c
+										ON pc.CarpoolID = c.CarpoolID
+										WHERE pc.Username={username}";
 				SqlCommand command = new SqlCommand(queryString, connection);
 				connection.Open();
 
@@ -331,7 +362,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					CarpoolsByUsername.Add(new PersonsCarpoolEntity(reader[0].ToString(), Convert.ToInt32(reader[1])));
+					CarpoolsByUsername.Add(new Carpool(Convert.ToInt32(reader["CarpoolID"]), reader["Description"].ToString())));
 				}
 
 				// Call Close when done reading.
@@ -342,7 +373,7 @@ namespace Fahrgemeinschaft
 
 
 		// Entities "umwandeln"
-		public List<Person> GetPersons() //PersonEntity in Person "umwandeln"
+		public List<Person> GetPersons()
 		{
 			List<Person> Persons = new List<Person>();
 			List<PersonEntity> personEntities = this.GetPersonEntities();
@@ -358,65 +389,75 @@ namespace Fahrgemeinschaft
 			PersonEntity personEntity = GetPersonEntityByUsername(username);
 			return new Person(personEntity.Username, personEntity.Name, personEntity?.Surname, personEntity.Address, personEntity.Gender);
 		}
-
-		public List<Car> GetCarsByUsername(string username)		//mit absicht bei fuelConsumption null einetragen zum "testen"
+		public List<Car> GetCarsByUsername(string username)
 		{
 			List<Car> cars = new List<Car>();
 			List<CarEntity> carEntities = this.GetCarEntitiesByUsername(username);
 
 			foreach (CarEntity carEntity in carEntities)
 			{
-				cars.Add(new Car(carEntity.Description, carEntity.SeatNumber, null));
+				cars.Add(new Car(carEntity.CarId, carEntity.OwnerUsername, carEntity.Description, carEntity.SeatNumber));
 			}
 			return cars;
 		}
-		public Car GetCarById(int carId)		//carId sollte auch in Car klasse ???
+		public Car GetCarById(int carId)
 		{
-			CarEntity carEntity = GetCarEntityById(carId);
-			return new Car(carEntity.Description, carEntity.SeatNumber, null);
+			CarEntity carEntity = this.GetCarEntityById(carId);
+			return new Car(carEntity.CarId, carEntity.OwnerUsername, carEntity.Description, carEntity.SeatNumber);
 		}
-		public Carpool GetCarpools(string username)
+		public void AddCarById(int carId)	//warum, wie???
 		{
-			List<Carpool> Carpools = new List<Carpool>();
+			throw new NotImplementedException();
+		}
+		public void SaveCar(string username, string description, int seatNumber)
+		{
+			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+			{
+				connection.Open();
+
+				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[Car] ([CarID],	[OwnerUsername], [Description],	[Seatnumber])
+										VALUES (@CarID, @OwnerUsername, @Description, @Seatnumber)";
+				
+				SqlCommand command = new SqlCommand(insertQuery, connection);
+								
+				command.Parameters.AddWithValue("@OwnerUsername", $"{username}");
+				command.Parameters.AddWithValue("@Description", $"{description}");
+				command.Parameters.AddWithValue("@Seatnumber", $"{seatNumber}");
+
+				command.ExecuteNonQuery();
+
+
+
+
+
+
+
+
+
+
+
+			}
+		}
+		public List<Carpool> GetCarpools(string username)
+		{
+			List<Carpool> carpools = new List<Carpool>();
 			List<CarpoolEntity> carpoolEntities = this.GetCarpoolEntities();
 
 			foreach (CarpoolEntity carpoolEntity in carpoolEntities)
 			{
-				Carpools.Add(new Carpool(
+				carpools.Add(new Carpool(carpoolEntity.CarpoolId, carpoolEntity.Description));
 			}
+			return carpools;
 		}
-		public Carpool GetCarpoolsByUsername(string username)
+		public List<Carpool> GetCarpoolsByUsername(string username)
 		{
-			
+			List<Carpool> carpools = this.GetPersonsCarpoolsEntitiesByUsername(username);
+			return carpools;
 		}
-		public Carpool GetCarpoolsByUsername(string username)
-		{
-			
-		}
-		public Person AddPerson()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void AddCarById(int carId)
-		{
-			throw new NotImplementedException();
-		}
-
-		
-
 		public void GetDriveById(int driveId)
 		{
 			throw new NotImplementedException();
 		}
-
-		
-
-		public void SaveCar(string description, int seatNumber, float fuelConsumption, int personId)
-		{
-			throw new NotImplementedException();
-		}
-
 		public void SavePerson(string username, string name, string surname, string address, string gender)
 		{
 			throw new NotImplementedException();

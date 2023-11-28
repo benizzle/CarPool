@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Data.Models
 {
-	internal class PersonsCarpoolEntity
+	internal class PersonsCarpoolsEntity
 	{
         public string Username { get; set; }
         public int CarpoolId { get; set; }
 
-		public PersonsCarpoolEntity(string username, int carpoolId)
+		public PersonsCarpoolsEntity(string username, int carpoolId)
 		{
-			Username = username;
-			CarpoolId = carpoolId;
+			this.Username = username;
+			this.CarpoolId = carpoolId;
 		}
 	}
 }

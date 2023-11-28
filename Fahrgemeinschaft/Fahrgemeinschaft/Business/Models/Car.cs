@@ -8,17 +8,17 @@ namespace Fahrgemeinschaft
 {
 	public class Car
 	{
-		public int carId;				//nachtraeglich eingetragen, korrekt?...
-		public string model;
+		public int? carId;
+		public string username;
+		public string description;
 		public int seatNumber;
-		public double? fuelConsumption;
 
-		public Car(string model, int seatNumber, double? fuelConsumption)
+		public Car(int? carId, string username, string description, int seatNumber)
 		{
-			this.model = model;
+			this.carId = carId;
+			this.username = username;
+			this.description = description;
 			this.seatNumber = seatNumber;
-			this.fuelConsumption = fuelConsumption;
 		}
-		
 	}
 }

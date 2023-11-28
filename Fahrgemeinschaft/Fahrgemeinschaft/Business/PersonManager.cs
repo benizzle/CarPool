@@ -29,23 +29,23 @@ namespace Fahrgemeinschaft
 			}
 		}
 
-		public List<string> GetPersonStringList(List<Person> plist)
-		{
-			List<string> list = new List<string>();
+		//public List<string> GetPersonStringList(List<Person> plist)
+		//{
+		//	List<string> list = new List<string>();
 
-			foreach (Person p in plist)
-			{
-				list.Add(p.ToString());
-			}
-			return list;
-		}
+		//	foreach (Person p in plist)
+		//	{
+		//		list.Add(p.ToString());
+		//	}
+		//	return list;
+		//}
 
-		public Person GetLastAdded()
-		{
-			int lastElement = this.Persons.Count() - 1;
-			Person lastPerson = this.Persons[lastElement];
-			return lastPerson;
-		}
+		//public Person GetLastAdded()
+		//{
+		//	int lastElement = this.Persons.Count() - 1;
+		//	Person lastPerson = this.Persons[lastElement];
+		//	return lastPerson;
+		//}
 
 	}
 }

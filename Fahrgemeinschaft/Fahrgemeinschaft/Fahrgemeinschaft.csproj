@@ -48,8 +48,8 @@
     <Compile Include="Business\Interfaces\ICreateCarpool.cs" />
     <Compile Include="Business\Interfaces\IAddPersonToCarpool.cs" />
     <Compile Include="Business\Interfaces\ICreatePerson.cs" />
-    <Compile Include="Business\Interfaces\IGetCarpoolByPerson.cs" />
-    <Compile Include="Business\Interfaces\IGetCarsByPerson.cs" />
+    <Compile Include="Business\Interfaces\IGetCarpoolByUsername.cs" />
+    <Compile Include="Business\Interfaces\IGetCarsByUsername.cs" />
     <Compile Include="Business\Interfaces\IGetPersons.cs" />
     <Compile Include="Business\Interfaces\IRemovePersonFromCarpool.cs" />
     <Compile Include="Business\IServiceManagerManager.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Data\Interfaces\IGetCarpoolsByUsername.cs" />
     <Compile Include="Data\Interfaces\IGetCarsByUsername.cs" />
     <Compile Include="Data\Interfaces\IGetDriveById.cs" />
-    <Compile Include="Data\Interfaces\IGetPersonById.cs" />
+    <Compile Include="Data\Interfaces\IGetPersonByUsername.cs" />
     <Compile Include="Data\Interfaces\IGetPersons.cs" />
     <Compile Include="Data\Interfaces\ISaveCar.cs" />
     <Compile Include="Data\Interfaces\ISavePerson.cs" />
