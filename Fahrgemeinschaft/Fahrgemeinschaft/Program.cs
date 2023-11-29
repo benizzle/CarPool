@@ -16,7 +16,7 @@ namespace Fahrgemeinschaft
 {
 	public class Program
 	{
-		// HIER FALSCH ABER WOHIN? public static DBManager dbManager = "Data Source=localhost;Initial Catalog=Carpool;Integrated Security=true;"
+		public static DBManager dbManager = new DBManager("Data Source=localhost;Initial Catalog=Carpool;Integrated Security=true;");
 
 		public static IPersonFunctions personManager = new PersonManager();
 		public static Person currentuser = null;

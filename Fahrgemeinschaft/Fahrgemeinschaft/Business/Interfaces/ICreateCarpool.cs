@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Business.Interfaces
 {
-	internal interface ICreateCarpool
+	public interface ICreateCarpool
 	{
 		void CreateCarpool(string description);
 	}

@@ -10,6 +10,7 @@ namespace Fahrgemeinschaft
 	{
 		public int? carpoolId;
 		public string description;
+		public List<Person> passangers;
 
 		public Carpool(int? carpoolId, string description)
 		{
@@ -17,6 +18,8 @@ namespace Fahrgemeinschaft
 			this.description = description;
 			//this.personcarpool = new List<PoolPerson>();
 			//this.personcarpool.Where(e=>e["carpoolid"] == id)
+			this.passangers = new List<Person>();
+			//this.passangers = 
 		}
 	}
 }

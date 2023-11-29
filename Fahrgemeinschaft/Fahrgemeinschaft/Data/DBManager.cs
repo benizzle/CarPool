@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Fahrgemeinschaft.Business;
 using Fahrgemeinschaft.Data;
 using Fahrgemeinschaft.Data.Interfaces;
@@ -12,7 +15,7 @@ using Fahrgemeinschaft.Data.Models;
 
 namespace Fahrgemeinschaft
 {
-	public class DBManager : IServiceManager, IDataLayer
+	public class DBManager : IDataLayer, IServiceManager
     {
         public string ConnectionString { get; set; }
 
@@ -362,7 +365,7 @@ namespace Fahrgemeinschaft
 				// Call Read before accessing data.
 				while (reader.Read())
 				{
-					CarpoolsByUsername.Add(new Carpool(Convert.ToInt32(reader["CarpoolID"]), reader["Description"].ToString())));
+					CarpoolsByUsername.Add(new Carpool(Convert.ToInt32(reader["CarpoolID"]), reader["Description"].ToString()));
 				}
 
 				// Call Close when done reading.
@@ -405,18 +408,14 @@ namespace Fahrgemeinschaft
 			CarEntity carEntity = this.GetCarEntityById(carId);
 			return new Car(carEntity.CarId, carEntity.OwnerUsername, carEntity.Description, carEntity.SeatNumber);
 		}
-		public void AddCarById(int carId)	//warum, wie???
-		{
-			throw new NotImplementedException();
-		}
 		public void SaveCar(string username, string description, int seatNumber)
 		{
 			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
 			{
 				connection.Open();
 
-				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[Car] ([CarID],	[OwnerUsername], [Description],	[Seatnumber])
-										VALUES (@CarID, @OwnerUsername, @Description, @Seatnumber)";
+				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[Car] ([OwnerUsername], [Description],	[Seatnumber])
+										VALUES (@OwnerUsername, @Description, @Seatnumber)";
 				
 				SqlCommand command = new SqlCommand(insertQuery, connection);
 								
@@ -425,20 +424,29 @@ namespace Fahrgemeinschaft
 				command.Parameters.AddWithValue("@Seatnumber", $"{seatNumber}");
 
 				command.ExecuteNonQuery();
-
-
-
-
-
-
-
-
-
-
-
 			}
 		}
-		public List<Carpool> GetCarpools(string username)
+		public void SavePerson(string username, string name, string surname, string address, string gender)
+		{
+			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+			{
+				connection.Open();
+
+				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[Person] ([Username], [Name], [Surname], [Address], [Gender])
+										VALUES (@Username, @Name, @Surname, @Address, @Gender)";
+
+				SqlCommand command = new SqlCommand(insertQuery, connection);
+
+				command.Parameters.AddWithValue("@Username", $"{username}");
+				command.Parameters.AddWithValue("@Name", $"{name}");
+				command.Parameters.AddWithValue("@Surname", $"{surname}");
+				command.Parameters.AddWithValue("@Address", $"{address}");
+				command.Parameters.AddWithValue("@Gender", $"{gender}");
+
+				command.ExecuteNonQuery();
+			}
+		}
+		public List<Carpool> GetCarpools()
 		{
 			List<Carpool> carpools = new List<Carpool>();
 			List<CarpoolEntity> carpoolEntities = this.GetCarpoolEntities();
@@ -454,48 +462,100 @@ namespace Fahrgemeinschaft
 			List<Carpool> carpools = this.GetPersonsCarpoolsEntitiesByUsername(username);
 			return carpools;
 		}
-		public void GetDriveById(int driveId)
+		public Drive GetDriveById(int driveId)
 		{
-			throw new NotImplementedException();
+			DriveEntity driveEntity = GetDriveEntityById(driveId);
+			return new Drive(driveEntity.DriveId, driveEntity.StartPoint, driveEntity.Destination, driveEntity.Starttime, driveEntity.Endtime, driveEntity.Price,
+								driveEntity.CarId, driveEntity.DriverUsername, driveEntity.CarpoolId);
 		}
-		public void SavePerson(string username, string name, string surname, string address, string gender)
+		public void AddCarToPerson(string username, string description, int seatNumber)
 		{
-			throw new NotImplementedException();
-		}
+			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+			{
+				connection.Open();
 
-		public void AddCarToPerson(Person person, string model, int seatNumber, double fuelConsumption)
-		{
-			throw new NotImplementedException();
-		}
+				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[Car] ([CarID],	[OwnerUsername], [Description],	[Seatnumber])
+										VALUES (@CarID, @OwnerUsername, @Description, @Seatnumber)";
 
-		public void AddPersonToCarpool(Person person, int carpoolId)
-		{
-			throw new NotImplementedException();
-		}
+				SqlCommand command = new SqlCommand(insertQuery, connection);
 
+				command.Parameters.AddWithValue("@OwnerUsername", $"{username}");
+				command.Parameters.AddWithValue("@Description", $"{description}");
+				command.Parameters.AddWithValue("@Seatnumber", $"{seatNumber}");
+
+				command.ExecuteNonQuery();
+			}
+		}
+		public void AddPersonToCarpool(string username, int carpoolId)
+		{
+			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+			{
+				connection.Open();
+
+				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[PersonsCarpools] ([Username], [CarpoolID])
+										VALUES (@Username, @CarpoolID)";
+
+				SqlCommand command = new SqlCommand(insertQuery, connection);
+
+				command.Parameters.AddWithValue("@Username", $"{username}");
+				command.Parameters.AddWithValue("@CarpoolID", $"{carpoolId}");
+
+				command.ExecuteNonQuery();
+			}
+		}
 		public void CreateCarpool(string description)
 		{
-			throw new NotImplementedException();
+			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+			{
+				connection.Open();
+
+				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[Carpool] ([CarpoolID], [Description])
+										VALUES (@CarpoolID, @Description)";
+
+				SqlCommand command = new SqlCommand(insertQuery, connection);
+
+				command.Parameters.AddWithValue("@Description", $"{description}");
+
+				command.ExecuteNonQuery();
+			}
+		}
+		public void CreatePerson(string username, string name, string surname, string address, string gender)
+		{
+			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+			{
+				connection.Open();
+
+				string insertQuery = $@"INSERT INTO [Carpool].[dbo].[Person] ([Username], [Name], [Surname], [Address], [Gender])
+										VALUES (@Username, @Name, @Surname, @Address, @Gender)";
+
+				SqlCommand command = new SqlCommand(insertQuery, connection);
+
+				command.Parameters.AddWithValue("@Username", $"{username}");
+				command.Parameters.AddWithValue("@Name", $"{name}");
+				command.Parameters.AddWithValue("@Surname", $"{surname}");
+				command.Parameters.AddWithValue("@Address", $"{address}");
+				command.Parameters.AddWithValue("@Gender", $"{gender}");
+
+				command.ExecuteNonQuery();
+			}
+		}
+		public void RemovePersonFromCarpool(string username, int carpoolId)
+		{
+			using (SqlConnection connection = new SqlConnection(this.ConnectionString))
+			{
+				connection.Open();
+
+				string insertQuery = $@"DELETE FROM [Carpool].[dbo].[PersonsCarpools]
+										WHERE Username = @Username AND CarpoolID = @CarpoolId";
+
+				SqlCommand command = new SqlCommand(insertQuery, connection);
+
+				command.Parameters.AddWithValue("@Username", $"{username}");
+				command.Parameters.AddWithValue("@carpoolId", $"{carpoolId}");
+
+				command.ExecuteNonQuery();
+			}
 		}
 
-		public void CreatePerson(Person person)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void GetCarpoolByUsername(int personId)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void RemovePersonFromCarpool(int carpoolId, int personId)
-		{
-			throw new NotImplementedException();
-		}
-
-		void IGetPersonByUsername.GetPersonByUsername(string username)	//auto implemented ???
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

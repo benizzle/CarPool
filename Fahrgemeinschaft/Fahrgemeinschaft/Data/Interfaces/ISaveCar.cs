@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Data.Interfaces
 {
-	internal interface ISaveCar
+	public interface ISaveCar
 	{
-		void SaveCar(string description, int seatNumber, float fuelConsumption, int personId);
+		void SaveCar(string ownerUsername, string description, int seatNumber);
 	}
 }

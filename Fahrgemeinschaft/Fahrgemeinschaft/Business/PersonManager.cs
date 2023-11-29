@@ -5,7 +5,7 @@ using Fahrgemeinschaft.Business;
 
 namespace Fahrgemeinschaft
 {
-	public class PersonManager : IServiceManagerManager
+	public class PersonManager
 	{
 		public List<Person> Persons;
 

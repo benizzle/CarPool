@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Business.Interfaces
 {
-	internal interface ICreatePerson
+	public interface ICreatePerson
 	{
-		void CreatePerson(Person person);
+		void CreatePerson(string username, string name, string surname, string address, string gender);
 	}
 }

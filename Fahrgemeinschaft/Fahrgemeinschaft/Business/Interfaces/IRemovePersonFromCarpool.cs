@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Business.Interfaces
 {
-	internal interface IRemovePersonFromCarpool
+	public interface IRemovePersonFromCarpool
 	{
-		void RemovePersonFromCarpool(int carpoolId, int personId);
+		void RemovePersonFromCarpool(string username, int carpoolId);
 	}
 }

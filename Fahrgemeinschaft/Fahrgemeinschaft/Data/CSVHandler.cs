@@ -10,7 +10,7 @@ using Fahrgemeinschaft.Business;
 
 namespace Fahrgemeinschaft
 {
-	public class CSVHandler : IPersonFunctions
+	public class CSVHandler
 	{
 
 		public static void WriteCsv(List<string> list , string path)

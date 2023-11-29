@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Data.Interfaces
 {
-	internal interface IGetDriveById
+	public interface IGetDriveById
 	{
-		void GetDriveById(int driveId);
+		Drive GetDriveById(int driveId);
 	}
 }

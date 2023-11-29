@@ -52,7 +52,6 @@
     <Compile Include="Business\Interfaces\IGetCarsByUsername.cs" />
     <Compile Include="Business\Interfaces\IGetPersons.cs" />
     <Compile Include="Business\Interfaces\IRemovePersonFromCarpool.cs" />
-    <Compile Include="Business\IServiceManagerManager.cs" />
     <Compile Include="Business\Models\Car.cs" />
     <Compile Include="Business\Models\Carpool.cs" />
     <Compile Include="Business\CarPoolAppLogic.cs" />
@@ -63,7 +62,6 @@
     <Compile Include="Business\Models\Drive.cs" />
     <Compile Include="Business\DriveManager.cs" />
     <Compile Include="Data\IDataLayer.cs" />
-    <Compile Include="Data\Interfaces\IAddCarById.cs" />
     <Compile Include="Data\Interfaces\IGetCarpoolsByUsername.cs" />
     <Compile Include="Data\Interfaces\IGetCarsByUsername.cs" />
     <Compile Include="Data\Interfaces\IGetDriveById.cs" />
@@ -76,7 +74,7 @@
     <Compile Include="Data\Models\DriveEntity.cs" />
     <Compile Include="Data\Models\PersonEntity.cs" />
     <Compile Include="Data\Models\PersonInDriveEntity.cs" />
-    <Compile Include="Data\Models\PersonsCarpoolEntity.cs" />
+    <Compile Include="Data\Models\PersonsCarpoolsEntity.cs" />
     <Compile Include="Data\PathManager.cs" />
     <Compile Include="Business\Models\Person.cs" />
     <Compile Include="Business\PersonManager.cs" />

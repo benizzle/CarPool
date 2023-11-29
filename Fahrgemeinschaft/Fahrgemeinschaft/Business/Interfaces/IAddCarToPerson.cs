@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Business.Interfaces
 {
-	internal interface IAddCarToPerson
+	public interface IAddCarToPerson
 	{
-		void AddCarToPerson(Person person, string model, int seatNumber, double fuelConsumption);
+		void AddCarToPerson(string username, string description, int seatNumber);
 	}
 }

@@ -10,12 +10,17 @@ namespace Fahrgemeinschaft.Business
 	{
 		public IServiceManager serviceManager;
 
-        public void AddCarToPerson(Person person, string model, int seatNumber, double fuelConsumption)
+		public ServiceManager(IServiceManager serviceManager)
+		{
+			this.serviceManager = serviceManager;
+		}
+
+		public void AddCarToPerson(string username, string description, int seatNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void AddPersonToCarpool(Person person, int carpoolId)
+		public void AddPersonToCarpool(string username, int carpoolId)
 		{
 			throw new NotImplementedException();
 		}
@@ -25,17 +30,17 @@ namespace Fahrgemeinschaft.Business
 			throw new NotImplementedException();
 		}
 
-		public void CreatePerson(Person person)
+		public void CreatePerson(string username, string name, string surname, string address, string gender)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void GetCarpoolByUsername(int personId)
+		public List<Carpool> GetCarpoolsByUsername(string username)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void GetCarsByPerson(int personId)
+		public List<Car> GetCarsByUsername(string username)
 		{
 			throw new NotImplementedException();
 		}
@@ -45,7 +50,7 @@ namespace Fahrgemeinschaft.Business
 			throw new NotImplementedException();
 		}
 
-		public void RemovePersonFromCarpool(int carpoolId, int personId)
+		public void RemovePersonFromCarpool(string username, int carpoolId)
 		{
 			throw new NotImplementedException();
 		}

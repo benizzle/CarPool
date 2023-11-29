@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fahrgemeinschaft.Business.Interfaces
 {
-	internal interface IGetPersons
+	public interface IGetPersons
 	{
 		List<Person> GetPersons();
 	}
